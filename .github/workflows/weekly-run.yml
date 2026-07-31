@@ -16,6 +16,10 @@ on:
 jobs:
   run-and-email:
     runs-on: ubuntu-latest
+    env:
+      # Copied from secrets so the "if" below can check it — the `secrets`
+      # context isn't allowed directly in step-level `if:` conditions.
+      MAIL_SERVER: ${{ secrets.MAIL_SERVER }}
     steps:
       - uses: actions/checkout@v4
 
@@ -53,10 +57,10 @@ jobs:
       # Skipped until MAIL_* secrets are added — add them and this runs
       # automatically on the next scheduled or manual trigger.
       - name: Email the report
-        if: ${{ secrets.MAIL_SERVER != '' }}
+        if: ${{ env.MAIL_SERVER != '' }}
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: ${{ secrets.MAIL_SERVER }}
+          server_address: ${{ env.MAIL_SERVER }}
           server_port: ${{ secrets.MAIL_PORT }}
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
