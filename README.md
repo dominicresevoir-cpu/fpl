@@ -58,17 +58,21 @@ A small Flask site sits on top of the same pipeline (`core.py`, shared with
 Run it locally with:
 
 ```bash
-gunicorn -w 1 --timeout 120 app:app
+gunicorn -w 1 --threads 4 --timeout 120 app:app
 ```
 
 (`-w 1` because the cooldown/cap/cache above are plain in-process state —
-they only work correctly with a single worker. `--timeout 120` because a
-`/run` call — Claude with web search plus live FPL/Odds calls — routinely
-takes longer than gunicorn's 30-second default.)
+they only work correctly within a single process. `--threads 4` so that one
+process can still serve a normal page load's several concurrent requests
+(HTML + CSS + JS) instead of queuing them behind a single connection — a
+plain sync worker with `-w 1` and no threads will intermittently drop
+requests under any real browser traffic. `--timeout 120` because a `/run`
+call — Claude with web search plus live FPL/Odds calls — routinely takes
+longer than gunicorn's 30-second default.)
 
 To deploy it, connect this repo to [Render](https://render.com) (free tier,
 no build step needed beyond `pip install -r requirements.txt`) or a similar
-host, using `gunicorn -w 1 --timeout 120 app:app` as the start command and
+host, using `gunicorn -w 1 --threads 4 --timeout 120 app:app` as the start command and
 the same environment variables as the GitHub Actions secrets below, plus
 `RUN_ANALYSIS_PASSCODE`.
 

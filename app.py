@@ -13,6 +13,7 @@ from __future__ import annotations
 import hmac
 import os
 import re
+import threading
 import time
 from datetime import datetime, timezone
 
@@ -117,6 +118,10 @@ RUN_COOLDOWN_SECONDS = 10 * 60
 MAX_RUNS_PER_DAY = 5
 _last_run_at: datetime | None = None
 _run_timestamps_today: list[datetime] = []
+# Now that gunicorn uses threads (not just one worker), guard the
+# check-then-set below so two near-simultaneous requests can't both pass
+# the cooldown/cap check before either one records its run.
+_run_state_lock = threading.Lock()
 
 
 def _runs_today_count(now: datetime) -> int:
@@ -142,19 +147,26 @@ def run_analysis():
             error = "RUN_ANALYSIS_PASSCODE isn't configured on the server."
         elif not hmac.compare_digest(submitted, expected):
             error = "Wrong passcode."
-        elif _last_run_at and (now - _last_run_at).total_seconds() < RUN_COOLDOWN_SECONDS:
-            remaining = int(RUN_COOLDOWN_SECONDS - (now - _last_run_at).total_seconds())
-            error = f"Please wait {remaining // 60}m {remaining % 60}s before running again."
-        elif _runs_today_count(now) >= MAX_RUNS_PER_DAY:
-            error = f"Daily limit of {MAX_RUNS_PER_DAY} manual runs reached — try again tomorrow."
         else:
-            try:
-                result = generate_report(config)
-                report_html = render_markdown(result.report_markdown)
-                _last_run_at = now
-                _run_timestamps_today.append(now)
-            except Exception as e:
-                error = f"Analysis failed: {e}"
+            # Claim a cooldown/cap slot under the lock (fast), then run the
+            # slow Claude call outside it so unrelated requests aren't
+            # blocked for the ~40s+ duration of a real run.
+            with _run_state_lock:
+                if _last_run_at and (now - _last_run_at).total_seconds() < RUN_COOLDOWN_SECONDS:
+                    remaining = int(RUN_COOLDOWN_SECONDS - (now - _last_run_at).total_seconds())
+                    error = f"Please wait {remaining // 60}m {remaining % 60}s before running again."
+                elif _runs_today_count(now) >= MAX_RUNS_PER_DAY:
+                    error = f"Daily limit of {MAX_RUNS_PER_DAY} manual runs reached — try again tomorrow."
+                else:
+                    _last_run_at = now
+                    _run_timestamps_today.append(now)
+
+            if error is None:
+                try:
+                    result = generate_report(config)
+                    report_html = render_markdown(result.report_markdown)
+                except Exception as e:
+                    error = f"Analysis failed: {e}"
 
     return render_template(
         "run.html",
