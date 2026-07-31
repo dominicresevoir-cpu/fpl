@@ -1,0 +1,62 @@
+name: FPL weekly recommendation
+
+on:
+  # FPL deadlines move around (early-kickoff GWs, rearranged fixtures,
+  # Boxing Day, etc.), so this runs twice a week to cover the usual
+  # Fri-evening and Sat-late-morning deadline windows. Cheap to run (a
+  # handful of API calls + one Claude call), so twice weekly is harmless
+  # even in weeks it fires "for nothing." Cron is in UTC.
+  schedule:
+    - cron: "0 8 * * 4"   # Thursday 08:00 UTC
+    - cron: "0 8 * * 6"   # Saturday 08:00 UTC
+  # Manual "run it now" button in the Actions tab, for deadlines that
+  # fall outside the above window (double gameweeks, rearranged fixtures).
+  workflow_dispatch: {}
+
+jobs:
+  run-and-email:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run FPL agent
+        env:
+          FPL_TEAM_ID: ${{ secrets.FPL_TEAM_ID }}
+          FPL_LEAGUE_ID: ${{ secrets.FPL_LEAGUE_ID }}
+          FPL_EMAIL: ${{ secrets.FPL_EMAIL }}
+          FPL_PASSWORD: ${{ secrets.FPL_PASSWORD }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MANUAL_BANK: ${{ secrets.MANUAL_BANK }}
+          MANUAL_FREE_TRANSFERS: ${{ secrets.MANUAL_FREE_TRANSFERS }}
+          CHIPS_AVAILABLE: ${{ secrets.CHIPS_AVAILABLE }}
+          LOOKAHEAD_GAMEWEEKS: ${{ secrets.LOOKAHEAD_GAMEWEEKS }}
+        run: python main.py
+
+      # Commit the report back to the repo so there's a running history in
+      # reports/, not just this run's logs.
+      - name: Commit report
+        run: |
+          git config user.name "fpl-agent-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add reports/
+          git diff --staged --quiet || git commit -m "Report: $(date -u +%F)"
+          git push
+
+      - name: Email the report
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "FPL recommendation is ready"
+          to: ${{ secrets.MAIL_TO }}
+          from: FPL Agent
+          body: file://reports/latest_report.md
