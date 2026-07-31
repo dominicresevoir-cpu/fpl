@@ -13,6 +13,9 @@ on:
   # fall outside the above window (double gameweeks, rearranged fixtures).
   workflow_dispatch: {}
 
+permissions:
+  contents: write   # needed so the "Commit report" step can push back to the repo
+
 jobs:
   run-and-email:
     runs-on: ubuntu-latest
