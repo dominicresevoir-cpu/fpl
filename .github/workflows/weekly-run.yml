@@ -37,6 +37,7 @@ jobs:
           MANUAL_FREE_TRANSFERS: ${{ secrets.MANUAL_FREE_TRANSFERS }}
           CHIPS_AVAILABLE: ${{ secrets.CHIPS_AVAILABLE }}
           LOOKAHEAD_GAMEWEEKS: ${{ secrets.LOOKAHEAD_GAMEWEEKS }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: python main.py
 
       # Commit the report back to the repo so there's a running history in
@@ -49,7 +50,10 @@ jobs:
           git diff --staged --quiet || git commit -m "Report: $(date -u +%F)"
           git push
 
+      # Skipped until MAIL_* secrets are added — add them and this runs
+      # automatically on the next scheduled or manual trigger.
       - name: Email the report
+        if: ${{ secrets.MAIL_SERVER != '' }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: ${{ secrets.MAIL_SERVER }}
