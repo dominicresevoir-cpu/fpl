@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Report history · FPL Agent{% endblock %}
+{% block content %}
+  <h1>Report history</h1>
+  {% if gameweeks %}
+    <ul class="report-list">
+      {% for gw in gameweeks %}
+        <li><a href="/reports/{{ gw }}">Gameweek {{ gw }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">No reports yet.</p>
+  {% endif %}
+{% endblock %}

@@ -37,6 +37,41 @@ Run it once a day or so as a gameweek deadline approaches — fixture
 difficulty, form, and prices all shift, so the closer to the deadline, the
 better the recommendation.
 
+## Web app (app.py)
+
+A small Flask site sits on top of the same pipeline (`core.py`, shared with
+`main.py`), for browsing reports and player data without touching the CLI:
+
+- `/` and `/reports` — latest and historical reports
+- `/players` — sortable/filterable table of every player's score, price, and
+  fixture difficulty (cached 30 min; deliberately skips the odds signal and
+  skips the FPL login attempt, so browsing this page never spends Odds API
+  quota or waits on FPL's currently-broken login)
+- `/run` — triggers a fresh report live from the browser instead of waiting
+  for the scheduled GitHub Actions run. Gated behind `RUN_ANALYSIS_PASSCODE`
+  (generate one with `python -c "import secrets; print(secrets.token_urlsafe(18))"`
+  and set it in `.env`) plus a 10-minute cooldown and a 5-per-day cap, since
+  each run is a real Anthropic API call. **Results here are shown inline
+  only — they aren't saved to `reports/`**; the scheduled weekly job is the
+  only durable history.
+
+Run it locally with:
+
+```bash
+gunicorn -w 1 --timeout 120 app:app
+```
+
+(`-w 1` because the cooldown/cap/cache above are plain in-process state —
+they only work correctly with a single worker. `--timeout 120` because a
+`/run` call — Claude with web search plus live FPL/Odds calls — routinely
+takes longer than gunicorn's 30-second default.)
+
+To deploy it, connect this repo to [Render](https://render.com) (free tier,
+no build step needed beyond `pip install -r requirements.txt`) or a similar
+host, using `gunicorn -w 1 --timeout 120 app:app` as the start command and
+the same environment variables as the GitHub Actions secrets below, plus
+`RUN_ANALYSIS_PASSCODE`.
+
 ## Automating the weekly run (GitHub Actions)
 
 This is wired up in `.github/workflows/weekly-run.yml`: it runs `main.py` on a

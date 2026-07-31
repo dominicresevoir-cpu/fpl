@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Players · FPL Agent{% endblock %}
+{% block content %}
+  <h1>Players</h1>
+  <p class="hint">Scores blend form, FPL's next-GW projection, ICT/xGI, and fixture ease
+     (FPL's rating + team-strength data — the bookmaker-odds signal is only used in
+     the full report, not here, to conserve API quota). Click a column to sort.</p>
+
+  <input type="text" id="player-filter" placeholder="Filter by name or team...">
+
+  <table id="players-table">
+    <thead>
+      <tr>
+        <th data-sort="name">Name</th>
+        <th data-sort="team_name">Team</th>
+        <th data-sort="position">Pos</th>
+        <th data-sort="now_cost">Price</th>
+        <th data-sort="score">Score</th>
+        <th data-sort="form">Form</th>
+        <th data-sort="ep_next">Next GW proj.</th>
+      </tr>
+    </thead>
+    <tbody id="players-tbody"></tbody>
+  </table>
+
+  <script type="application/json" id="players-data">{{ players | tojson }}</script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}

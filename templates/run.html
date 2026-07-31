@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Run Analysis · FPL Agent{% endblock %}
+{% block content %}
+  <h1>Run analysis now</h1>
+  <p class="hint">
+    Triggers a fresh, Claude-written report right now instead of waiting for the
+    Thursday/Saturday scheduled run. This calls the Anthropic API live (real cost
+    per click), so it's gated behind a passcode with a 10-minute cooldown and a
+    daily limit. <strong>The result below is shown here only — it isn't saved to
+    the report history.</strong> Permanent history comes from the scheduled
+    GitHub Actions run.
+  </p>
+
+  {% if last_run_at %}
+    <p class="hint">Last manual run: {{ last_run_at.strftime('%Y-%m-%d %H:%M UTC') }}</p>
+  {% endif %}
+
+  <form method="post" id="run-form">
+    <input type="password" name="passcode" placeholder="Passcode" required autofocus>
+    <button type="submit">Run analysis</button>
+  </form>
+  <p class="hint" id="run-loading" hidden>Running — this can take up to a minute
+     (web search + a cold-started server can both add delay). Please wait…</p>
+
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+
+  {% if report_html %}
+    <article class="report">{{ report_html | safe }}</article>
+  {% endif %}
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}
