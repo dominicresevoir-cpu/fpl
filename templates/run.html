@@ -1,33 +1,32 @@
 {% extends "base.html" %}
-{% block title %}Run Analysis · FPL Agent{% endblock %}
+{% block title %}Refresh · FPL Agent{% endblock %}
 {% block content %}
-  <h1>Run analysis now</h1>
+  <h1>Refresh the report</h1>
   <p class="hint">
-    Triggers a fresh, Claude-written report right now instead of waiting for the
-    Thursday/Saturday scheduled run. This calls the Anthropic API live (real cost
-    per click), so it's gated behind a passcode with a 10-minute cooldown and a
-    daily limit. <strong>The result below is shown here only — it isn't saved to
-    the report history.</strong> Permanent history comes from the scheduled
-    GitHub Actions run.
+    Generates a fresh, Claude-written report right now instead of waiting for
+    the Thursday/Saturday scheduled run, and replaces the homepage's latest
+    report with it. This calls the Anthropic API live (real cost per click),
+    so it's gated behind a passcode with a 10-minute cooldown and a daily
+    limit. <strong>Note:</strong> this updates the live site immediately, but
+    only the scheduled GitHub Actions run commits a report to git — a
+    refresh here can be overwritten by the next server restart/redeploy if
+    the scheduled job hasn't also run since.
   </p>
 
   {% if last_run_at %}
-    <p class="hint">Last manual run: {{ last_run_at.strftime('%Y-%m-%d %H:%M UTC') }}</p>
+    <p class="hint">Last manual refresh: {{ last_run_at.strftime('%Y-%m-%d %H:%M UTC') }}</p>
   {% endif %}
 
   <form method="post" id="run-form">
     <input type="password" name="passcode" placeholder="Passcode" required autofocus>
-    <button type="submit">Run analysis</button>
+    <button type="submit">Refresh report</button>
   </form>
-  <p class="hint" id="run-loading" hidden>Running — this can take up to a minute
-     (web search + a cold-started server can both add delay). Please wait…</p>
+  <p class="hint" id="run-loading" hidden>Refreshing — this can take up to a minute
+     (web search + a cold-started server can both add delay). You'll be taken to
+     the updated homepage when it's done.</p>
 
   {% if error %}
     <p class="error">{{ error }}</p>
-  {% endif %}
-
-  {% if report_html %}
-    <article class="report">{{ report_html | safe }}</article>
   {% endif %}
 
   <script src="{{ url_for('static', filename='app.js') }}"></script>

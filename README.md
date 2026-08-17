@@ -47,13 +47,17 @@ A small Flask site sits on top of the same pipeline (`core.py`, shared with
   fixture difficulty (cached 30 min; deliberately skips the odds signal and
   skips the FPL login attempt, so browsing this page never spends Odds API
   quota or waits on FPL's currently-broken login)
-- `/run` — triggers a fresh report live from the browser instead of waiting
-  for the scheduled GitHub Actions run. Gated behind `RUN_ANALYSIS_PASSCODE`
-  (generate one with `python -c "import secrets; print(secrets.token_urlsafe(18))"`
-  and set it in `.env`) plus a 10-minute cooldown and a 5-per-day cap, since
-  each run is a real Anthropic API call. **Results here are shown inline
-  only — they aren't saved to `reports/`**; the scheduled weekly job is the
-  only durable history.
+- `/run` — a "Refresh" button that generates a fresh report live from the
+  browser and replaces the homepage's latest report with it, instead of
+  waiting for the scheduled GitHub Actions run. Gated behind
+  `RUN_ANALYSIS_PASSCODE` (generate one with
+  `python -c "import secrets; print(secrets.token_urlsafe(18))"` and set it
+  in `.env`) plus a 10-minute cooldown and a 5-per-day cap, since each run
+  is a real Anthropic API call. It writes to `reports/` the same way the
+  CLI does — but on most hosts (e.g. Render's free tier) that write only
+  persists until the next server restart/redeploy, since the disk isn't
+  durable. The scheduled GitHub Actions run is still the only *permanent*
+  history, since it commits to git.
 
 Run it locally with:
 
@@ -79,9 +83,9 @@ the same environment variables as the GitHub Actions secrets below, plus
 ## Automating the weekly run (GitHub Actions)
 
 This is wired up in `.github/workflows/weekly-run.yml`: it runs `main.py` on a
-schedule, commits the report to `reports/`, and emails you the result. It
-never submits transfers — same read-only/recommend-only behaviour as running
-it locally.
+schedule and commits the report to `reports/`, which is also what the live
+website's homepage reads. It never submits transfers — same
+read-only/recommend-only behaviour as running it locally.
 
 **One-time setup:**
 
@@ -101,11 +105,7 @@ it locally.
    | `MANUAL_FREE_TRANSFERS` | e.g. `1` (fallback if login fails) |
    | `CHIPS_AVAILABLE` | e.g. `wildcard,freehit,bboost,3xc` |
    | `LOOKAHEAD_GAMEWEEKS` | e.g. `5` |
-   | `MAIL_SERVER` | e.g. `smtp.gmail.com` |
-   | `MAIL_PORT` | e.g. `465` |
-   | `MAIL_USERNAME` | the sending email address |
-   | `MAIL_PASSWORD` | an **app password**, not your real email password (Gmail: Google Account → Security → App passwords) |
-   | `MAIL_TO` | where you want the report sent — can be the same address |
+   | `ODDS_API_KEY` | optional, from the-odds-api.com |
 
 3. That's it — it'll fire Thursday and Saturday mornings (UTC), and you can
    also trigger it on demand from the **Actions** tab → *FPL weekly

@@ -2,10 +2,13 @@
 {% block title %}{{ title }} · FPL Agent{% endblock %}
 {% block content %}
   <h1>{{ title }}</h1>
+  {% if just_refreshed %}
+    <p class="hint">✓ Refreshed just now.</p>
+  {% endif %}
   {% if html %}
     <article class="report">{{ html | safe }}</article>
   {% else %}
-    <p class="empty">No report has been generated yet. Try <a href="/run">running analysis now</a>,
+    <p class="empty">No report has been generated yet. Try <a href="/run">refreshing it now</a>,
        or wait for the next scheduled run.</p>
   {% endif %}
 {% endblock %}

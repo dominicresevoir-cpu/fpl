@@ -1,11 +1,12 @@
 """
 Web UI for the FPL agent, on top of the same core.py pipeline the CLI uses.
 
-Run locally with:  python app.py   (or: gunicorn -w 1 app:app)
+Run locally with:  python app.py   (or: gunicorn -w 1 --threads 4 --timeout 120 app:app)
 
-IMPORTANT: run with a single worker (gunicorn -w 1). The /run cooldown,
-daily cap, and the /players cache below are plain module-level state — they
-only work as intended when every request hits the same process.
+IMPORTANT: run with a single worker (-w 1). The /run cooldown, daily cap,
+and the /players cache below are plain module-level state — they only work
+as intended within a single process. --threads lets that one process still
+serve concurrent requests.
 """
 
 from __future__ import annotations
@@ -20,11 +21,11 @@ from datetime import datetime, timezone
 import bleach
 import markdown
 from dotenv import load_dotenv
-from flask import Flask, abort, render_template, request
+from flask import Flask, abort, redirect, render_template, request, url_for
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-from core import FPLConfig, fetch_player_data, generate_report
+from core import FPLConfig, fetch_player_data, generate_report, save_report
 
 load_dotenv()
 
@@ -62,7 +63,8 @@ def read_report(path: str) -> str | None:
 def home():
     raw = read_report(os.path.join(REPORTS_DIR, "latest_report.md"))
     html = render_markdown(raw) if raw is not None else None
-    return render_template("report.html", title="Latest report", html=html)
+    just_refreshed = request.args.get("refreshed") == "1"
+    return render_template("report.html", title="Latest report", html=html, just_refreshed=just_refreshed)
 
 
 @app.route("/reports")
@@ -136,7 +138,6 @@ def run_analysis():
     global _last_run_at
 
     error = None
-    report_html = None
 
     if request.method == "POST":
         submitted = request.form.get("passcode", "")
@@ -164,16 +165,13 @@ def run_analysis():
             if error is None:
                 try:
                     result = generate_report(config)
-                    report_html = render_markdown(result.report_markdown)
+                    save_report(result, reports_dir=REPORTS_DIR)
                 except Exception as e:
                     error = f"Analysis failed: {e}"
+                else:
+                    return redirect(url_for("home", refreshed="1"))
 
-    return render_template(
-        "run.html",
-        error=error,
-        report_html=report_html,
-        last_run_at=_last_run_at,
-    )
+    return render_template("run.html", error=error, last_run_at=_last_run_at)
 
 
 if __name__ == "__main__":
