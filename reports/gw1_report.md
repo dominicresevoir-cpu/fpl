@@ -1,17 +1,19 @@
 # FPL Recommendation — Gameweek 1
 
-*Generated 2026-08-15T08:30 | squad data: unavailable — no squad data (pre-season or login unavailable)*
+*Generated 2026-08-20T08:51 | squad data: unavailable — no squad data (pre-season or login unavailable)*
 
-No squad or mini-league data came through this week, so here's a league-wide watchlist instead of personalized advice.
+**No squad data available — league-wide GW1 watchlist only.**
 
-**Midfield — the standout of the whole dataset**: Bruno Fernandes leads every position by a wide margin (6.21 vs next-best 4.43). Worth noting he's been subject of transfer noise, but reporting confirms Manchester United will not sell Bruno Fernandes during the current transfer window, so he's a safe early-season pick at £12.0m. Below him, Dasilva (4.43) and Enzo (4.36) offer strong value in the £5-7m range if budget's tight, with Saka (4.34) the premium alternative — though Arsenal's fixture list is a red flag: fixture-difficulty coverage flags Arsenal have arguably been handed the toughest start, with four of their first six matches against last season's top seven, along with a trip to Manchester United in Gameweek 1. That makes Saka a talent-over-fixture gamble to open the season, not a nailed-on pick.
+**Premium anchor:** Haaland (£15.5m) is the standout forward — he has finished as the game's highest-scoring player in two of the last four seasons, including last year. He's essentially the default captain pool-wide; no red flags in early team news. Behind him, Thiago and Watkins offer mid-price forward value if you want to spread risk.
 
-**Forward**: Haaland (5.59) is the clear top scorer and, price aside, the highest-ceiling captain option in the entire pool. Thiago (4.34) and Watkins (3.93) are the value tier — both under £8.5m and worth rostering if Haaland's too expensive for your build.
+**Best value pick:** B.Fernandes leads all midfielders in the model (6.21) despite a mid-price tag (£12.0m), and early GW1 team news lists him as nailed and undoubted — "Bruno Fernandes remains the safest pick" for Man Utd right now. United's opening fixtures also look kind, which increases the value of players with secure roles at Old Trafford. Worth prioritizing early before price rises.
 
-**Defence**: Virgil (3.44) and O'Reilly (3.33) top the charts and both sit at a reasonable £6.5m, better value than Gabriel at £8.0m for a similar score (3.12). Senesi (3.12) at £6.0m is the budget enabler here.
+**Differentials to watch:** Dasilva (£5.0m, 4.43) and Enzo (£7.0m, 4.36) both outscore Saka and Semenyo in the model at a fraction of the price — strong "hidden value" picks if you're building a mini-league-beating squad rather than a template one, since they're cheap enough to fit alongside two premiums.
 
-**Goalkeeper**: Pickford (2.36) edges Raya (2.29), but the whole position is bunched tightly — Kelleher and Roefs at £5.0m are near-identical value picks if you want to save money for outfield players.
+**Defense:** Virgil and O'Reilly (both 6.5m) lead the model, with Senesi (£6.0m) a notably cheaper option scoring almost as well (3.12) — good budget enabler to free funds for the front line.
 
-**Fixture swing to watch**: beyond Arsenal's brutal opener, the broader early-season analysis flags a natural pivot point where the first genuinely difficult fixture arrives against Manchester City immediately after the three-week international break — a signal worth banking for wildcard timing once squads are set.
+**Goalkeeper:** Pickford (2.36) edges Raya despite being £0.5m cheaper — the value pick of the position if budget is tight.
 
-Bottom line for a GW1 draft: Haaland or Bruno as your marquee names, Virgil/O'Reilly for cheap defensive returns, and treat Saka as high-risk given the fixture list rather than an automatic template pick.
+**Fixture/injury note:** Man City's Matheus Nunes was injured in the warm-up on Sunday, and the club have confirmed that Rodri has had back surgery — City's early-season midfield/defense could be shakier than usual, a small red flag if you're eyeing City assets beyond Haaland.
+
+**Bottom line:** Build around Haaland + B.Fernandes as your two nailed premiums, use Senesi or Pedro Porro to fund them in defense, and take a punt on Dasilva or Enzo as a cheap differential in midfield rather than paying full price for Saka/Semenyo. Once you have your actual squad and rival mini-league data, I can give you real captaincy and transfer calls.
