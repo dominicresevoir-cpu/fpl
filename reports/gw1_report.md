@@ -1,19 +1,17 @@
 # FPL Recommendation — Gameweek 1
 
-*Generated 2026-08-20T08:51 | squad data: unavailable — no squad data (pre-season or login unavailable)*
+*Generated 2026-08-22T08:31 | squad data: unavailable — no squad data (pre-season or login unavailable)*
 
-**No squad data available — league-wide GW1 watchlist only.**
+**Watchlist — Gameweek 1 (no squad data, so this is league-wide, not personalized)**
 
-**Premium anchor:** Haaland (£15.5m) is the standout forward — he has finished as the game's highest-scoring player in two of the last four seasons, including last year. He's essentially the default captain pool-wide; no red flags in early team news. Behind him, Thiago and Watkins offer mid-price forward value if you want to spread risk.
+**GKP:** Raya is the standout pick, scoring well clear of the pack (3.82 vs next-best 1.5) — a strong early-season #1 target if you don't already own an Arsenal defender.
 
-**Best value pick:** B.Fernandes leads all midfielders in the model (6.21) despite a mid-price tag (£12.0m), and early GW1 team news lists him as nailed and undoubted — "Bruno Fernandes remains the safest pick" for Man Utd right now. United's opening fixtures also look kind, which increases the value of players with secure roles at Old Trafford. Worth prioritizing early before price rises.
+**DEF:** White (5.43) and Calafiori (4.48) are both nailed-on Arsenal starters, cheap, and Arsenal's defense is the model behind Raya's score too — a White/Calafiori/Raya triple-up from one clean-sheet-heavy side is a live GW1 strategy. Gabriel offers similar upside at a higher price if you want the aerial-threat angle.
 
-**Differentials to watch:** Dasilva (£5.0m, 4.43) and Enzo (£7.0m, 4.36) both outscore Saka and Semenyo in the model at a fraction of the price — strong "hidden value" picks if you're building a mini-league-beating squad rather than a template one, since they're cheap enough to fit alongside two premiums.
+**MID:** Saka (5.56) and Ødegaard (5.34) top the position by a distance, but there's a real fitness/rotation flag on Saka right now: Arsenal started their 2026 pre-season without Saka, who missed a preseason friendly, with the absence understood to be part of a planned recovery programme following a heavy World Cup workload rather than a new injury. That's a caution light for early-season minutes — Ødegaard looks the safer opening-weeks pick, with Saka one to monitor before locking in as captain material. Tzolis (3.62) is a cheap differential shout in the same table.
 
-**Defense:** Virgil and O'Reilly (both 6.5m) lead the model, with Senesi (£6.0m) a notably cheaper option scoring almost as well (3.12) — good budget enabler to free funds for the front line.
+**FWD:** Weak position overall this week — Havertz (3.55) clears the field, with Haaland (1.71) well down the list, likely reflecting a tough-fixture discount rather than reduced talent. Worth noting: Isak now plays for Liverpool, not Newcastle, following last season's record move — his 1.29 score here reflects genuine early-season uncertainty in a new/rotating forward line, not a data error, so don't chase him as a template pick yet.
 
-**Goalkeeper:** Pickford (2.36) edges Raya despite being £0.5m cheaper — the value pick of the position if budget is tight.
+**Fixture/news watch:** Saka's rest-managed return is the single biggest thing to track before the deadline — if he's confirmed to start, he jumps back to a top-two overall pick; if he's eased in from the bench, fade him for GW1 captaincy.
 
-**Fixture/injury note:** Man City's Matheus Nunes was injured in the warm-up on Sunday, and the club have confirmed that Rodri has had back surgery — City's early-season midfield/defense could be shakier than usual, a small red flag if you're eyeing City assets beyond Haaland.
-
-**Bottom line:** Build around Haaland + B.Fernandes as your two nailed premiums, use Senesi or Pedro Porro to fund them in defense, and take a punt on Dasilva or Enzo as a cheap differential in midfield rather than paying full price for Saka/Semenyo. Once you have your actual squad and rival mini-league data, I can give you real captaincy and transfer calls.
+**Mini-league standings:** Dom's Team leads early at 20 points, with Under my Cucurella and The Kings XI tied for 2nd on 15 — everyone else in the league (including you, presumably) sits bunched at 9, so there's no gap yet that demands desperate differentials; build your squad on the Arsenal-heavy value plays above and reassess once real squad/transfer data is available.
