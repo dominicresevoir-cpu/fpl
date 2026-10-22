@@ -1,5 +1,5 @@
-# FPL Recommendation — Gameweek 7
+# FPL Recommendation — Gameweek 8
 
-*Generated 2026-10-17T12:00 | squad data: approximate — last public picks from GW6, bank/FT are manual overrides from .env*
+*Generated 2026-10-22T13:42 | squad data: approximate — last public picks from GW7, bank/FT are manual overrides from .env*
 
 
